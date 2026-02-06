@@ -24,14 +24,19 @@ const quoteSchema = z.object({
 type QuoteFormData = z.infer<typeof quoteSchema>;
 
 const projectTypes = [
-  "Residential Construction",
-  "Commercial Construction",
-  "Hospitality (Hospitals/Healthcare)",
-  "Institutions (Schools/Colleges)",
-  "Interior Design",
-  "Renovation & Remodeling",
-  "Turnkey Project",
-  "Custom Architectural Solution",
+  // Commercial
+  { group: "Commercial", label: "Commercial - Hospitality (Hotels & Lodging)" },
+  { group: "Commercial", label: "Commercial - Healthcare (Hospitals & Clinics)" },
+  { group: "Commercial", label: "Commercial - Institutions (Schools & Colleges)" },
+  { group: "Commercial", label: "Commercial - Offices & Workspaces" },
+  // Residential
+  { group: "Residential", label: "Residential - Apartments & Flats" },
+  { group: "Residential", label: "Residential - Villas & Independent Houses" },
+  // Services
+  { group: "Services", label: "Interior Design" },
+  { group: "Services", label: "Renovation & Remodeling" },
+  { group: "Services", label: "Turnkey Project" },
+  { group: "Services", label: "Custom Architectural Solution" },
 ];
 
 const budgetRanges = [
