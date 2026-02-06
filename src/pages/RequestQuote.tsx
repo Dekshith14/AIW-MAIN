@@ -216,9 +216,22 @@ const RequestQuote = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {projectTypes.map((type) => (
-                                <SelectItem key={type} value={type}>
-                                  {type}
+                              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Commercial</div>
+                              {projectTypes.filter(t => t.group === "Commercial").map((type) => (
+                                <SelectItem key={type.label} value={type.label}>
+                                  {type.label.replace("Commercial - ", "")}
+                                </SelectItem>
+                              ))}
+                              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider border-t mt-1 pt-2">Residential</div>
+                              {projectTypes.filter(t => t.group === "Residential").map((type) => (
+                                <SelectItem key={type.label} value={type.label}>
+                                  {type.label.replace("Residential - ", "")}
+                                </SelectItem>
+                              ))}
+                              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider border-t mt-1 pt-2">Services</div>
+                              {projectTypes.filter(t => t.group === "Services").map((type) => (
+                                <SelectItem key={type.label} value={type.label}>
+                                  {type.label}
                                 </SelectItem>
                               ))}
                             </SelectContent>
