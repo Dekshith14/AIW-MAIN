@@ -62,9 +62,9 @@
                  {item.name}
                </Link>
              ))}
-             <Link to="/contact" className="btn-primary ml-4">
-               Get Quote
-             </Link>
+              <Link to="/request-quote" className="btn-primary ml-4">
+                Get Quote
+              </Link>
            </nav>
  
            {/* Mobile Menu Button */}
@@ -113,9 +113,9 @@
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ delay: 0.5 }}
                >
-                 <Link to="/contact" className="btn-gold mt-8">
-                   Get Quote
-                 </Link>
+                  <Link to="/request-quote" className="btn-gold mt-8">
+                    Get Quote
+                  </Link>
                </motion.div>
              </nav>
            </motion.div>

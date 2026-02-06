@@ -1,25 +1,27 @@
- import projectResidential from "@/assets/project-residential.jpg";
- import projectCommercial from "@/assets/project-commercial.jpg";
- import projectInterior from "@/assets/project-interior.jpg";
- import projectRenovation from "@/assets/project-renovation.jpg";
- import projectSpa from "@/assets/project-spa.jpg";
+import projectResidential from "@/assets/project-residential.jpg";
+import projectCommercial from "@/assets/project-commercial.jpg";
+import projectInterior from "@/assets/project-interior.jpg";
+import projectRenovation from "@/assets/project-renovation.jpg";
+import projectSpa from "@/assets/project-spa.jpg";
+import projectHospitality from "@/assets/project-hospitality.jpg";
+import projectInstitution from "@/assets/project-institution.jpg";
  
- export interface Project {
-   id: number;
-   slug: string;
-   title: string;
-   category: "Residential" | "Commercial" | "Interior" | "Renovation";
-   image: string;
-   location: string;
-   year: string;
-   description: string;
-   highlights: string[];
-   details: {
-     area: string;
-     duration: string;
-     style: string;
-   };
- }
+export interface Project {
+  id: number;
+  slug: string;
+  title: string;
+  category: "Residential" | "Commercial" | "Interior" | "Renovation" | "Hospitality" | "Institutions";
+  image: string;
+  location: string;
+  year: string;
+  description: string;
+  highlights: string[];
+  details: {
+    area: string;
+    duration: string;
+    style: string;
+  };
+}
  
  export const projects: Project[] = [
    {
@@ -110,35 +112,79 @@
        style: "Art Deco Revival",
      },
    },
-   {
-     id: 5,
-     slug: "marble-spa-retreat",
-     title: "Marble Spa Retreat",
-     category: "Interior",
-     image: projectSpa,
-     location: "Aspen, CO",
-     year: "2024",
-     description:
-       "A luxurious spa bathroom featuring floor-to-ceiling marble, a freestanding soaking tub, and brass accents. Every detail was carefully considered to create a hotel-quality experience at home.",
-     highlights: [
-       "Calacatta marble surfaces",
-       "Heated floors",
-       "Steam shower",
-       "Custom brass fixtures",
-     ],
-     details: {
-       area: "400 sq ft",
-       duration: "3 months",
-       style: "Luxury Spa",
-     },
-   },
- ];
- 
- export const getProjectBySlug = (slug: string): Project | undefined => {
-   return projects.find((p) => p.slug === slug);
- };
- 
- export const getProjectsByCategory = (category: string): Project[] => {
-   if (category === "All") return projects;
-   return projects.filter((p) => p.category === category);
- };
+    {
+      id: 5,
+      slug: "marble-spa-retreat",
+      title: "Marble Spa Retreat",
+      category: "Interior",
+      image: projectSpa,
+      location: "Aspen, CO",
+      year: "2024",
+      description:
+        "A luxurious spa bathroom featuring floor-to-ceiling marble, a freestanding soaking tub, and brass accents. Every detail was carefully considered to create a hotel-quality experience at home.",
+      highlights: [
+        "Calacatta marble surfaces",
+        "Heated floors",
+        "Steam shower",
+        "Custom brass fixtures",
+      ],
+      details: {
+        area: "400 sq ft",
+        duration: "3 months",
+        style: "Luxury Spa",
+      },
+    },
+    {
+      id: 6,
+      slug: "city-general-hospital",
+      title: "City General Hospital",
+      category: "Hospitality",
+      image: projectHospitality,
+      location: "Delhi, India",
+      year: "2024",
+      description:
+        "A state-of-the-art 500-bed multi-specialty hospital designed with patient comfort and operational efficiency in mind. Features include modular ICUs, advanced surgical suites, and healing-focused interior design.",
+      highlights: [
+        "500+ bed capacity",
+        "Modular ICU design",
+        "Healing garden courtyards",
+        "Energy-efficient systems",
+      ],
+      details: {
+        area: "2,50,000 sq ft",
+        duration: "36 months",
+        style: "Modern Healthcare",
+      },
+    },
+    {
+      id: 7,
+      slug: "heritage-international-school",
+      title: "Heritage International School",
+      category: "Institutions",
+      image: projectInstitution,
+      location: "Bangalore, India",
+      year: "2023",
+      description:
+        "A contemporary educational campus designed to inspire learning and creativity. The design incorporates flexible classroom spaces, collaborative zones, and sustainable architecture principles.",
+      highlights: [
+        "Smart classroom technology",
+        "Amphitheater & auditorium",
+        "Sports complex",
+        "Green building certified",
+      ],
+      details: {
+        area: "1,50,000 sq ft",
+        duration: "24 months",
+        style: "Contemporary Educational",
+      },
+    },
+  ];
+
+export const getProjectBySlug = (slug: string): Project | undefined => {
+  return projects.find((p) => p.slug === slug);
+};
+
+export const getProjectsByCategory = (category: string): Project[] => {
+  if (category === "All") return projects;
+  return projects.filter((p) => p.category === category);
+};
