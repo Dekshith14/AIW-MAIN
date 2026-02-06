@@ -4,22 +4,22 @@
  import projectRenovation from "@/assets/project-renovation.jpg";
  import projectSpa from "@/assets/project-spa.jpg";
  
- export interface Project {
-   id: number;
-   slug: string;
-   title: string;
-   category: "Residential" | "Commercial" | "Interior" | "Renovation";
-   image: string;
-   location: string;
-   year: string;
-   description: string;
-   highlights: string[];
-   details: {
-     area: string;
-     duration: string;
-     style: string;
-   };
- }
+export interface Project {
+  id: number;
+  slug: string;
+  title: string;
+  category: "Residential" | "Commercial" | "Interior" | "Renovation" | "Hospitality" | "Institutions";
+  image: string;
+  location: string;
+  year: string;
+  description: string;
+  highlights: string[];
+  details: {
+    area: string;
+    duration: string;
+    style: string;
+  };
+}
  
  export const projects: Project[] = [
    {

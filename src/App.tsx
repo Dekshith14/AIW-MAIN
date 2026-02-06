@@ -25,9 +25,10 @@ import NotFound from "./pages/NotFound";
            <Route path="/about" element={<About />} />
            <Route path="/services" element={<Services />} />
            <Route path="/projects" element={<Projects />} />
-           <Route path="/projects/:slug" element={<ProjectDetail />} />
-           <Route path="/contact" element={<Contact />} />
-           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/projects/:slug" element={<ProjectDetail />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/request-quote" element={<RequestQuote />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
            <Route path="*" element={<NotFound />} />
          </Routes>
        </BrowserRouter>

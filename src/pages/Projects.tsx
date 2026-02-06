@@ -5,7 +5,7 @@
  import { ArrowUpRight } from "lucide-react";
  import { projects } from "@/data/projects";
  
- const categories = ["All", "Residential", "Commercial", "Interior", "Renovation"];
+ const categories = ["All", "Residential", "Commercial", "Hospitality", "Institutions", "Interior", "Renovation"];
  
  const Projects = () => {
    const [activeCategory, setActiveCategory] = useState("All");

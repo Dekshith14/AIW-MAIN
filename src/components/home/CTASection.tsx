@@ -21,16 +21,16 @@
              Let's discuss your vision and create something extraordinary together. Our
              team is ready to bring your dream project to life.
            </p>
-           <Link
-             to="/contact"
-             className="btn-gold inline-flex items-center gap-2 group"
-           >
-             Get Your Free Consultation
-             <ArrowRight
-               size={18}
-               className="transition-transform group-hover:translate-x-1"
-             />
-           </Link>
+            <Link
+              to="/request-quote"
+              className="btn-gold inline-flex items-center gap-2 group"
+            >
+              Get Your Free Consultation
+              <ArrowRight
+                size={18}
+                className="transition-transform group-hover:translate-x-1"
+              />
+            </Link>
          </AnimatedSection>
        </div>
      </section>
