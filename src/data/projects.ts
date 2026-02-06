@@ -5,12 +5,44 @@ import projectRenovation from "@/assets/project-renovation.jpg";
 import projectSpa from "@/assets/project-spa.jpg";
 import projectHospitality from "@/assets/project-hospitality.jpg";
 import projectInstitution from "@/assets/project-institution.jpg";
- 
+
+// Category Types
+export type MainCategory = "Commercial" | "Residential";
+
+export type CommercialSubCategory = "Hospitality" | "Healthcare" | "Institutions" | "Offices";
+export type ResidentialSubCategory = "Apartments" | "Villas";
+export type SubCategory = CommercialSubCategory | ResidentialSubCategory;
+
+export interface CategoryStructure {
+  main: MainCategory;
+  sub: SubCategory;
+}
+
+// Category Hierarchy Definition
+export const categoryHierarchy: Record<MainCategory, { label: string; subcategories: { key: SubCategory; label: string; description: string }[] }> = {
+  Commercial: {
+    label: "Commercial",
+    subcategories: [
+      { key: "Hospitality", label: "Hospitality", description: "Hotels, resorts, serviced stays & lodging" },
+      { key: "Healthcare", label: "Healthcare", description: "Hospitals, clinics & medical centers" },
+      { key: "Institutions", label: "Institutions", description: "Schools, colleges & educational facilities" },
+      { key: "Offices", label: "Offices", description: "Corporate offices & co-working spaces" },
+    ],
+  },
+  Residential: {
+    label: "Residential",
+    subcategories: [
+      { key: "Apartments", label: "Apartments", description: "Flats, gated communities & multi-unit buildings" },
+      { key: "Villas", label: "Villas", description: "Independent houses, bungalows & luxury villas" },
+    ],
+  },
+};
+
 export interface Project {
   id: number;
   slug: string;
   title: string;
-  category: "Residential" | "Commercial" | "Interior" | "Renovation" | "Hospitality" | "Institutions";
+  category: CategoryStructure;
   image: string;
   location: string;
   year: string;
