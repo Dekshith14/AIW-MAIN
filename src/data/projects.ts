@@ -216,7 +216,23 @@ export const getProjectBySlug = (slug: string): Project | undefined => {
   return projects.find((p) => p.slug === slug);
 };
 
-export const getProjectsByCategory = (category: string): Project[] => {
-  if (category === "All") return projects;
-  return projects.filter((p) => p.category === category);
+export const getProjectsByMainCategory = (mainCategory: MainCategory | "All"): Project[] => {
+  if (mainCategory === "All") return projects;
+  return projects.filter((p) => p.category.main === mainCategory);
+};
+
+export const getProjectsBySubCategory = (subCategory: SubCategory | "All"): Project[] => {
+  if (subCategory === "All") return projects;
+  return projects.filter((p) => p.category.sub === subCategory);
+};
+
+export const getProjectsByFilter = (
+  mainCategory: MainCategory | "All",
+  subCategory: SubCategory | "All"
+): Project[] => {
+  return projects.filter((p) => {
+    const matchesMain = mainCategory === "All" || p.category.main === mainCategory;
+    const matchesSub = subCategory === "All" || p.category.sub === subCategory;
+    return matchesMain && matchesSub;
+  });
 };
