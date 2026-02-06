@@ -36,14 +36,18 @@
          />
          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/80 via-charcoal-dark/30 to-transparent" />
          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 lg:p-20">
-           <div className="container mx-auto">
-             <AnimatedSection>
-               <span className="text-label text-gold-light">{project.category}</span>
-               <h1 className="text-display text-primary-foreground mt-4">
-                 {project.title}
-               </h1>
-             </AnimatedSection>
-           </div>
+          <div className="container mx-auto">
+              <AnimatedSection>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-label text-gold-light">{project.category.main}</span>
+                  <span className="text-gold-light/50">•</span>
+                  <span className="text-label text-stone">{project.category.sub}</span>
+                </div>
+                <h1 className="text-display text-primary-foreground mt-4">
+                  {project.title}
+                </h1>
+              </AnimatedSection>
+            </div>
          </div>
        </section>
  
