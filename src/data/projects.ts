@@ -1,8 +1,10 @@
- import projectResidential from "@/assets/project-residential.jpg";
- import projectCommercial from "@/assets/project-commercial.jpg";
- import projectInterior from "@/assets/project-interior.jpg";
- import projectRenovation from "@/assets/project-renovation.jpg";
- import projectSpa from "@/assets/project-spa.jpg";
+import projectResidential from "@/assets/project-residential.jpg";
+import projectCommercial from "@/assets/project-commercial.jpg";
+import projectInterior from "@/assets/project-interior.jpg";
+import projectRenovation from "@/assets/project-renovation.jpg";
+import projectSpa from "@/assets/project-spa.jpg";
+import projectHospitality from "@/assets/project-hospitality.jpg";
+import projectInstitution from "@/assets/project-institution.jpg";
  
 export interface Project {
   id: number;
