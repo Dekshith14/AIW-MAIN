@@ -62,9 +62,9 @@
                  {item.name}
                </Link>
              ))}
-             <Link to="/contact" className="btn-primary ml-4">
-               Get Quote
-             </Link>
+              <Link to="/request-quote" className="btn-primary ml-4">
+                Get Quote
+              </Link>
            </nav>
  
            {/* Mobile Menu Button */}
