@@ -1,55 +1,56 @@
- import { useParams, Link } from "react-router-dom";
- import Layout from "@/components/layout/Layout";
- import AnimatedSection from "@/components/ui/AnimatedSection";
- import { getProjectBySlug, projects } from "@/data/projects";
- import { ArrowLeft, ArrowRight, MapPin, Calendar, Maximize } from "lucide-react";
- 
- const ProjectDetail = () => {
-   const { slug } = useParams();
-   const project = getProjectBySlug(slug || "");
- 
-   if (!project) {
-     return (
-       <Layout>
-         <div className="section-padding text-center">
-           <h1 className="text-headline mb-4">Project Not Found</h1>
-           <Link to="/projects" className="btn-primary">
-             Back to Projects
-           </Link>
-         </div>
-       </Layout>
-     );
-   }
- 
-   const currentIndex = projects.findIndex((p) => p.id === project.id);
-   const prevProject = projects[currentIndex - 1];
-   const nextProject = projects[currentIndex + 1];
- 
-   return (
-     <Layout>
-       {/* Hero */}
-       <section className="relative h-[70vh] md:h-[80vh]">
-         <img
-           src={project.image}
-           alt={project.title}
-           className="w-full h-full object-cover"
-         />
-         <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/80 via-charcoal-dark/30 to-transparent" />
-         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 lg:p-20">
+import { useParams, Link } from "react-router-dom";
+import Layout from "@/components/layout/Layout";
+import AnimatedSection from "@/components/ui/AnimatedSection";
+import ProjectGallery from "@/components/ui/ProjectGallery";
+import { getProjectBySlug, projects } from "@/data/projects";
+import { ArrowLeft, ArrowRight, MapPin, Calendar, Maximize } from "lucide-react";
+
+const ProjectDetail = () => {
+  const { slug } = useParams();
+  const project = getProjectBySlug(slug || "");
+
+  if (!project) {
+    return (
+      <Layout>
+        <div className="section-padding text-center">
+          <h1 className="text-headline mb-4">Project Not Found</h1>
+          <Link to="/projects" className="btn-primary">
+            Back to Projects
+          </Link>
+        </div>
+      </Layout>
+    );
+  }
+
+  const currentIndex = projects.findIndex((p) => p.id === project.id);
+  const prevProject = projects[currentIndex - 1];
+  const nextProject = projects[currentIndex + 1];
+
+  return (
+    <Layout>
+      {/* Hero with Gallery */}
+      <section className="relative pt-20">
+        <ProjectGallery 
+          mainImage={project.image} 
+          gallery={project.gallery} 
+          title={project.title} 
+        />
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-charcoal-dark/80 via-charcoal-dark/30 to-transparent pointer-events-none h-40" />
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 lg:p-20 pointer-events-none">
           <div className="container mx-auto">
-              <AnimatedSection>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-label text-gold-light">{project.category.main}</span>
-                  <span className="text-gold-light/50">•</span>
-                  <span className="text-label text-stone">{project.category.sub}</span>
-                </div>
-                <h1 className="text-display text-primary-foreground mt-4">
-                  {project.title}
-                </h1>
-              </AnimatedSection>
-            </div>
-         </div>
-       </section>
+            <AnimatedSection>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-label text-gold-light">{project.category.main}</span>
+                <span className="text-gold-light/50">•</span>
+                <span className="text-label text-stone">{project.category.sub}</span>
+              </div>
+              <h1 className="text-display text-primary-foreground mt-4">
+                {project.title}
+              </h1>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
  
        {/* Details */}
        <section className="section-padding">

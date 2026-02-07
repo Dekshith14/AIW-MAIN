@@ -44,6 +44,7 @@ export interface Project {
   title: string;
   category: CategoryStructure;
   image: string;
+  gallery?: string[]; // Optional array of additional images
   location: string;
   year: string;
   description: string;
@@ -62,6 +63,7 @@ export const projects: Project[] = [
     title: "Serenity Villa",
     category: { main: "Residential", sub: "Villas" },
     image: projectResidential,
+    gallery: [projectInterior, projectSpa], // Example: additional views
     location: "Beverly Hills, CA",
     year: "2024",
     description:
@@ -172,6 +174,7 @@ export const projects: Project[] = [
     title: "City General Hospital",
     category: { main: "Commercial", sub: "Healthcare" },
     image: projectHospitality,
+    gallery: [projectCommercial, projectInstitution], // Example: additional views
     location: "Delhi, India",
     year: "2024",
     description:
