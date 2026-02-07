@@ -94,7 +94,8 @@ Add a new object to the `projects` array:
     main: "Residential",  // "Commercial" or "Residential"
     sub: "Villas"         // See category options below
   },
-  image: projectLuxuryVilla,  // Your imported image
+  image: projectLuxuryVilla,  // Your imported main image
+  gallery: [projectLuxuryVilla2, projectLuxuryVilla3],  // Optional: additional images
   location: "Mumbai, India",
   year: "2024",
   description: "A stunning luxury villa featuring contemporary architecture with traditional Indian elements. Floor-to-ceiling windows offer panoramic city views.",
@@ -111,6 +112,28 @@ Add a new object to the `projects` array:
   }
 }
 ```
+
+### Adding Multiple Images (Gallery)
+
+Projects now support multiple images! To add a gallery:
+
+1. Import additional images at the top of `src/data/projects.ts`
+2. Add them to the `gallery` array (optional field)
+3. The main `image` is always shown first, followed by gallery images
+
+```typescript
+// Example with gallery
+{
+  image: projectMainView,
+  gallery: [projectInterior, projectExterior, projectPool],
+  // ... rest of project data
+}
+```
+
+The project detail page will show:
+- Thumbnail strip for navigation
+- Arrow navigation between images
+- Fullscreen lightbox on click
 
 ### Category Options
 
@@ -307,8 +330,19 @@ To add real backend functionality:
 Files to update:
 - `src/pages/Contact.tsx`
 - `src/components/layout/Footer.tsx`
+- `src/components/layout/FloatingContact.tsx` (WhatsApp/Call button)
 
-### Task 3: Change Hero Text
+### Task 3: Update WhatsApp/Call Button
+
+Open `src/components/layout/FloatingContact.tsx` and update:
+
+```typescript
+const phoneNumber = "+919876543210"; // Your phone number
+const whatsappNumber = "919876543210"; // WhatsApp format (no + or spaces)
+const whatsappMessage = "Your custom message here";
+```
+
+### Task 4: Change Hero Text
 
 Open `src/components/home/HeroSection.tsx` and edit the text content.
 
