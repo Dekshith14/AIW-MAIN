@@ -28,15 +28,18 @@ const projectTypes = [
   { group: "Commercial", label: "Commercial - Hospitality (Hotels & Lodging)" },
   { group: "Commercial", label: "Commercial - Healthcare (Hospitals & Clinics)" },
   { group: "Commercial", label: "Commercial - Institutions (Schools & Colleges)" },
-  { group: "Commercial", label: "Commercial - Offices & Workspaces" },
+  { group: "Commercial", label: "Commercial - Corporate & IT Offices" },
+  { group: "Commercial", label: "Commercial - Retail Spaces" },
   // Residential
   { group: "Residential", label: "Residential - Apartments & Flats" },
   { group: "Residential", label: "Residential - Villas & Independent Houses" },
   // Services
-  { group: "Services", label: "Interior Design" },
-  { group: "Services", label: "Renovation & Remodeling" },
+  { group: "Services", label: "Specialized Interiors" },
+  { group: "Services", label: "Civil & MEP Services" },
   { group: "Services", label: "Turnkey Project" },
-  { group: "Services", label: "Custom Architectural Solution" },
+  { group: "Services", label: "Workshop & Furniture Manufacturing" },
+  { group: "Services", label: "Architectural Design & CAD" },
+  { group: "Services", label: "Project Consultation" },
 ];
 
 const budgetRanges = [
@@ -305,12 +308,12 @@ const RequestQuote = () => {
                 <h3 className="font-serif text-2xl mb-6">Why Choose AIW?</h3>
                 <ul className="space-y-4">
                   {[
-                    "15+ years of industry experience",
-                    "500+ successful projects completed",
-                    "Award-winning design team",
+                    "12+ years of industry experience",
+                    "100+ successful projects completed",
+                    "50+ skilled professionals",
                     "Transparent pricing & timelines",
                     "Quality materials & craftsmanship",
-                    "Dedicated project management",
+                    "Offices in Karnataka, TN & Telangana",
                   ].map((item, index) => (
                     <li key={index} className="flex items-start gap-3">
                       <CheckCircle size={18} className="text-accent mt-0.5 shrink-0" />

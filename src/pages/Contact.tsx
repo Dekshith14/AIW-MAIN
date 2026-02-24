@@ -63,11 +63,13 @@
                      </div>
                      <div>
                        <h3 className="font-serif text-lg mb-1">Visit Us</h3>
-                       <p className="text-muted-foreground text-sm leading-relaxed">
-                         123 Architecture Avenue
-                         <br />
-                         Design District, NY 10001
-                       </p>
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                          #47/1, Kanakashree Layout,
+                          <br />
+                          Dr. S.R.K. Nagar Post, Byrathi,
+                          <br />
+                          Bangalore – 560 077, Karnataka, India
+                        </p>
                      </div>
                    </div>
  
@@ -77,12 +79,12 @@
                      </div>
                      <div>
                        <h3 className="font-serif text-lg mb-1">Call Us</h3>
-                       <a
-                         href="tel:+1234567890"
-                         className="text-muted-foreground text-sm hover:text-accent transition-colors"
-                       >
-                         +1 (234) 567-890
-                       </a>
+                        <a
+                          href="tel:+919876543210"
+                          className="text-muted-foreground text-sm hover:text-accent transition-colors"
+                        >
+                          +91 98765 43210
+                        </a>
                      </div>
                    </div>
  
@@ -92,12 +94,12 @@
                      </div>
                      <div>
                        <h3 className="font-serif text-lg mb-1">Email Us</h3>
-                       <a
-                         href="mailto:hello@aiw.com"
-                         className="text-muted-foreground text-sm hover:text-accent transition-colors"
-                       >
-                         hello@aiw.com
-                       </a>
+                        <a
+                          href="mailto:info@aiwindia.com"
+                          className="text-muted-foreground text-sm hover:text-accent transition-colors"
+                        >
+                          info@aiwindia.com
+                        </a>
                      </div>
                    </div>
  
@@ -174,7 +176,7 @@
                          value={formData.phone}
                          onChange={handleChange}
                          className="w-full px-4 py-3 bg-background border border-border focus:border-accent focus:outline-none transition-colors"
-                         placeholder="+1 (234) 567-890"
+                         placeholder="+91 98765 43210"
                        />
                      </div>
                      <div>
@@ -192,11 +194,12 @@
                          className="w-full px-4 py-3 bg-background border border-border focus:border-accent focus:outline-none transition-colors"
                        >
                          <option value="">Select a service</option>
-                         <option value="construction">Construction</option>
-                         <option value="interior">Interior Design</option>
-                         <option value="renovation">Renovation</option>
-                         <option value="turnkey">Turnkey Project</option>
-                         <option value="consultation">Consultation</option>
+                          <option value="interiors">Specialized Interiors</option>
+                          <option value="civil-mep">Civil & MEP Services</option>
+                          <option value="turnkey">Turnkey Projects</option>
+                          <option value="furniture">Workshop & Furniture</option>
+                          <option value="design-cad">Architectural Design & CAD</option>
+                          <option value="consultation">Project Consultation</option>
                        </select>
                      </div>
                    </div>
@@ -245,9 +248,9 @@
            <div className="text-center">
              <MapPin size={48} className="mx-auto text-accent mb-4" />
              <p className="text-muted-foreground">Map Integration Placeholder</p>
-             <p className="text-sm text-muted-foreground mt-2">
-               123 Architecture Avenue, Design District, NY 10001
-             </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                #47/1, Kanakashree Layout, Byrathi, Bangalore – 560 077
+              </p>
            </div>
          </div>
        </section>
