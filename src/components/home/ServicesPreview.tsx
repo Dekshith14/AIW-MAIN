@@ -5,33 +5,39 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 const services = [
   {
     icon: Palette,
-    title: "Specialized Interiors",
-    description: "Full interior fit-out from concept to completion — offices, healthcare, hospitality, and residential.",
+    title: "Residential Interior Design",
+    description: "Living room, bedroom, modular kitchen, wardrobe & storage solutions — elegant spaces that reflect your personality.",
     num: "01",
   },
   {
     icon: Building2,
-    title: "Civil & MEP Services",
-    description: "Comprehensive civil, electrical, plumbing, and MEP works for all building types.",
+    title: "Office & Commercial Interiors",
+    description: "Professional office interiors, space optimization, and lighting design for productive work environments.",
     num: "02",
   },
   {
-    icon: Key,
-    title: "Turnkey Projects",
-    description: "Complete end-to-end project management and delivery, on time and within budget.",
+    icon: Wrench,
+    title: "House Construction Services",
+    description: "Independent house, villa & apartment construction with structural, civil works, and professional supervision.",
     num: "03",
   },
   {
-    icon: Armchair,
-    title: "Workshop & Furniture",
-    description: "Custom modular furniture manufacturing — office desks, conference tables, seating, and storage.",
+    icon: Key,
+    title: "Renovation & Remodeling",
+    description: "Home extensions, renovations, and turnkey remodeling projects — transforming existing spaces completely.",
     num: "04",
   },
   {
-    icon: Compass,
-    title: "Architectural Design & CAD",
-    description: "Design detailing, documentation, and CAD drawing services from any stage of completion.",
+    icon: Armchair,
+    title: "Custom Furniture & Space Planning",
+    description: "Modular kitchen design, custom furniture manufacturing, and intelligent space optimization.",
     num: "05",
+  },
+  {
+    icon: Compass,
+    title: "Turnkey Construction Projects",
+    description: "End-to-end project execution from planning and design to construction and finishing, on time and within budget.",
+    num: "06",
   },
 ];
 
@@ -42,7 +48,7 @@ const ServicesPreview = () => {
         <AnimatedSection className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20">
           <div>
             <span className="text-label text-accent">What We Do</span>
-            <h2 className="text-headline mt-4">Our Services</h2>
+            <h2 className="text-headline mt-4">Complete Interior & Construction Solutions</h2>
           </div>
           <Link
             to="/services"

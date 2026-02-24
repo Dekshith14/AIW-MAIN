@@ -7,23 +7,23 @@ const testimonials = [
   {
     id: 1,
     quote:
-      "AIW transformed our vision into reality. Their attention to detail and innovative approach exceeded all expectations. The space they created truly reflects our lifestyle.",
-    author: "Sarah Mitchell",
-    role: "Homeowner, Serenity Villa",
+      "AIW delivered stylish interiors for our home that exceeded expectations. Their transparent pricing and on-time completion made the entire experience stress-free.",
+    author: "Rajesh Kumar",
+    role: "Homeowner, Bangalore",
   },
   {
     id: 2,
     quote:
-      "Working with AIW was a seamless experience. Their professionalism and design expertise made our office renovation stress-free and the results speak for themselves.",
-    author: "James Chen",
-    role: "CEO, TechStart Inc.",
+      "From office design to turnkey execution, AIW handled everything professionally. The quality of materials and finishes is truly outstanding.",
+    author: "Priya Sharma",
+    role: "Director, Tech Innovations",
   },
   {
     id: 3,
     quote:
-      "The team's understanding of luxury hospitality design is unmatched. They delivered a boutique hotel that guests consistently rave about.",
-    author: "Elena Rodriguez",
-    role: "Director, Lumiere Hotels",
+      "We trusted AIW with our commercial space renovation and they delivered a durable, beautifully designed environment that our team loves working in.",
+    author: "Anand Mehta",
+    role: "Facility Head, Corporate Office",
   },
 ];
 
@@ -44,8 +44,8 @@ const TestimonialsSection = () => {
       <div className="container mx-auto">
         <AnimatedSection className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-label text-accent">Testimonials</span>
-            <h2 className="text-headline mt-4">Client Voices</h2>
+            <span className="text-label text-accent">Client Testimonials</span>
+            <h2 className="text-headline mt-4">Our Clients Trust Us</h2>
           </div>
 
           <div className="relative min-h-[280px] md:min-h-[220px] flex items-center justify-center">
