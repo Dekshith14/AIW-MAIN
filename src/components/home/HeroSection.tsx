@@ -37,7 +37,7 @@ const HeroSection = () => {
               style={{ transformOrigin: "left" }}
             />
             <span className="text-label text-gold-light">
-              Specialized Interiors, Civil & MEP Services
+              Interior Design & Construction Experts
             </span>
           </motion.div>
 
@@ -47,7 +47,7 @@ const HeroSection = () => {
             transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="text-display text-primary-foreground mb-8"
           >
-            Complete Solution
+            Interior Design & Construction
             <br />
             <motion.span 
               className="text-gold italic"
@@ -55,7 +55,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.9 }}
             >
-              Under One Roof
+              for Modern Spaces
             </motion.span>
           </motion.h1>
 
@@ -65,9 +65,9 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.7 }}
             className="text-lg md:text-xl text-stone max-w-xl mb-12 leading-[1.8] font-light"
           >
-            We craft exceptional living and working environments through
-            specialized interiors, civil works, and MEP services across
-            corporate, hospitality, healthcare, and residential sectors.
+            Transform your space with our professional interior design and construction
+            services. We deliver complete turnkey solutions for homes, apartments, villas,
+            and offices — from planning and design to construction and finishing.
           </motion.p>
 
           <motion.div

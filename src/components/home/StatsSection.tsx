@@ -3,10 +3,10 @@ import { useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 
 const stats = [
-  { value: 100, suffix: "+", label: "Projects Completed" },
-  { value: 12, suffix: "+", label: "Years of Excellence" },
-  { value: 50, suffix: "+", label: "Professionals" },
-  { value: 6, suffix: "+", label: "Sectors Served" },
+  { value: 100, suffix: "+", label: "Home Interiors Delivered" },
+  { value: 1000, suffix: "+", label: "Commercial Spaces Executed" },
+  { value: 45, suffix: "", label: "Days Delivery" },
+  { value: 10, suffix: "", label: "Years Warranty" },
 ];
 
 const CountUp = ({ value, suffix }: { value: number; suffix: string }) => {

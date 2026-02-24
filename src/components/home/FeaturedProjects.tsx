@@ -35,8 +35,8 @@ const FeaturedProjects = () => {
       <div className="container mx-auto">
         <AnimatedSection className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20">
           <div>
-            <span className="text-label text-accent">Portfolio</span>
-            <h2 className="text-headline mt-4">Featured Projects</h2>
+            <span className="text-label text-accent">Our Recent Projects</span>
+            <h2 className="text-headline mt-4">Quality Craftsmanship & Innovative Designs</h2>
           </div>
           <Link
             to="/projects"
