@@ -13,11 +13,10 @@ const HeroSection = () => {
           animate={{ scale: 1 }}
           transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
           src={heroImage}
-          alt="Luxury interior design"
+          alt="Premium interior design by AIW"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal-dark/95 via-charcoal-dark/70 to-charcoal-dark/20" />
-        {/* Warm atmospheric overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/40 via-transparent to-transparent" />
       </div>
 
@@ -38,7 +37,7 @@ const HeroSection = () => {
               style={{ transformOrigin: "left" }}
             />
             <span className="text-label text-gold-light">
-              Premium Construction & Interior Design
+              Specialized Interiors, Civil & MEP Services
             </span>
           </motion.div>
 
@@ -48,7 +47,7 @@ const HeroSection = () => {
             transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="text-display text-primary-foreground mb-8"
           >
-            Building Spaces
+            Complete Solution
             <br />
             <motion.span 
               className="text-gold italic"
@@ -56,7 +55,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.9 }}
             >
-              Intelligently
+              Under One Roof
             </motion.span>
           </motion.h1>
 
@@ -66,8 +65,9 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.7 }}
             className="text-lg md:text-xl text-stone max-w-xl mb-12 leading-[1.8] font-light"
           >
-            We craft exceptional living and working environments through innovative
-            construction and inspired interior design.
+            We craft exceptional living and working environments through
+            specialized interiors, civil works, and MEP services across
+            corporate, hospitality, healthcare, and residential sectors.
           </motion.p>
 
           <motion.div

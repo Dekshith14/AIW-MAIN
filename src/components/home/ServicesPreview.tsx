@@ -1,36 +1,36 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Building2, Palette, RefreshCcw, Key, Ruler } from "lucide-react";
+import { ArrowUpRight, Building2, Palette, Wrench, Armchair, Key, Compass } from "lucide-react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
 const services = [
   {
-    icon: Building2,
-    title: "Construction",
-    description: "Premium construction solutions from concept to completion with meticulous attention to detail.",
+    icon: Palette,
+    title: "Specialized Interiors",
+    description: "Full interior fit-out from concept to completion — offices, healthcare, hospitality, and residential.",
     num: "01",
   },
   {
-    icon: Palette,
-    title: "Interior Design",
-    description: "Sophisticated interior spaces that blend aesthetics with functionality.",
+    icon: Building2,
+    title: "Civil & MEP Services",
+    description: "Comprehensive civil, electrical, plumbing, and MEP works for all building types.",
     num: "02",
   },
   {
     icon: Key,
     title: "Turnkey Projects",
-    description: "Complete end-to-end project management for seamless delivery.",
+    description: "Complete end-to-end project management and delivery, on time and within budget.",
     num: "03",
   },
   {
-    icon: RefreshCcw,
-    title: "Renovation",
-    description: "Transformative renovations that breathe new life into existing spaces.",
+    icon: Armchair,
+    title: "Workshop & Furniture",
+    description: "Custom modular furniture manufacturing — office desks, conference tables, seating, and storage.",
     num: "04",
   },
   {
-    icon: Ruler,
-    title: "Custom Architecture",
-    description: "Bespoke architectural solutions tailored to your unique vision.",
+    icon: Compass,
+    title: "Architectural Design & CAD",
+    description: "Design detailing, documentation, and CAD drawing services from any stage of completion.",
     num: "05",
   },
 ];
