@@ -1,0 +1,185 @@
+import { useEffect, useState } from "react";
+import AdminLayout from "@/components/admin/AdminLayout";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
+import { Save } from "lucide-react";
+
+interface ContentItem {
+  id?: string;
+  page: string;
+  section: string;
+  content_key: string;
+  content_value: string | null;
+  content_type: string;
+  sort_order: number;
+}
+
+const pages = [
+  { key: "homepage", label: "Homepage" },
+  { key: "about", label: "About" },
+  { key: "services", label: "Services" },
+  { key: "contact", label: "Contact" },
+  { key: "footer", label: "Footer" },
+];
+
+const AdminContent = () => {
+  const [content, setContent] = useState<ContentItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState("homepage");
+
+  const fetchContent = async () => {
+    const { data } = await supabase.from("site_content").select("*").order("sort_order");
+    if (data) setContent(data);
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchContent(); }, []);
+
+  const getPageContent = (page: string) => content.filter((c) => c.page === page);
+
+  const updateContent = (id: string | undefined, key: string, value: string) => {
+    setContent((prev) =>
+      prev.map((c) =>
+        (c.id === id || (!c.id && c.content_key === key)) ? { ...c, content_value: value } : c
+      )
+    );
+  };
+
+  const addContentItem = () => {
+    setContent((prev) => [
+      ...prev,
+      {
+        page: activeTab,
+        section: "general",
+        content_key: `new_field_${Date.now()}`,
+        content_value: "",
+        content_type: "text",
+        sort_order: prev.length,
+      },
+    ]);
+  };
+
+  const saveContent = async () => {
+    setSaving(true);
+    const pageContent = getPageContent(activeTab);
+
+    for (const item of pageContent) {
+      if (item.id) {
+        await supabase.from("site_content").update({
+          content_value: item.content_value,
+        }).eq("id", item.id);
+      } else {
+        await supabase.from("site_content").upsert({
+          page: item.page,
+          section: item.section,
+          content_key: item.content_key,
+          content_value: item.content_value,
+          content_type: item.content_type,
+          sort_order: item.sort_order,
+        }, { onConflict: "page,section,content_key" });
+      }
+    }
+    toast.success("Content saved successfully");
+    setSaving(false);
+    fetchContent();
+  };
+
+  const deleteItem = async (id: string | undefined, key: string) => {
+    if (id) {
+      await supabase.from("site_content").delete().eq("id", id);
+    }
+    setContent((prev) => prev.filter((c) => c.id !== id && c.content_key !== key));
+    toast.success("Content item removed");
+  };
+
+  if (loading) return <AdminLayout><p className="text-muted-foreground">Loading...</p></AdminLayout>;
+
+  return (
+    <AdminLayout>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="font-serif text-3xl mb-2">Content Manager</h1>
+          <p className="text-muted-foreground">Edit website content directly. Changes appear instantly.</p>
+        </div>
+        <Button onClick={saveContent} disabled={saving} className="bg-accent text-accent-foreground">
+          <Save size={16} className="mr-2" /> {saving ? "Saving..." : "Save Changes"}
+        </Button>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="mb-6">
+          {pages.map((p) => (
+            <TabsTrigger key={p.key} value={p.key}>{p.label}</TabsTrigger>
+          ))}
+        </TabsList>
+
+        {pages.map((page) => (
+          <TabsContent key={page.key} value={page.key}>
+            <div className="bg-card border border-border rounded-sm p-6 space-y-6">
+              {getPageContent(page.key).length === 0 ? (
+                <p className="text-muted-foreground text-center py-8">
+                  No content items for this page yet. Add one below.
+                </p>
+              ) : (
+                getPageContent(page.key).map((item) => (
+                  <div key={item.id || item.content_key} className="border-b border-border pb-4 last:border-0">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <Input
+                          value={item.content_key}
+                          onChange={(e) => {
+                            setContent((prev) =>
+                              prev.map((c) =>
+                                c === item ? { ...c, content_key: e.target.value } : c
+                              )
+                            );
+                          }}
+                          className="w-48 text-xs h-8"
+                          placeholder="Content key"
+                        />
+                        <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                          {item.section}
+                        </span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => deleteItem(item.id, item.content_key)}
+                        className="text-destructive hover:text-destructive"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                    {item.content_type === "text" && item.content_value && item.content_value.length > 100 ? (
+                      <Textarea
+                        value={item.content_value || ""}
+                        onChange={(e) => updateContent(item.id, item.content_key, e.target.value)}
+                        rows={4}
+                      />
+                    ) : (
+                      <Input
+                        value={item.content_value || ""}
+                        onChange={(e) => updateContent(item.id, item.content_key, e.target.value)}
+                      />
+                    )}
+                  </div>
+                ))
+              )}
+
+              <Button variant="outline" onClick={addContentItem} className="w-full border-dashed">
+                + Add Content Field
+              </Button>
+            </div>
+          </TabsContent>
+        ))}
+      </Tabs>
+    </AdminLayout>
+  );
+};
+
+export default AdminContent;
