@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Star, Eye, EyeOff, Search, Copy } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import ImageUpload from "@/components/admin/ImageUpload";
 
 interface Project {
   id: string;
