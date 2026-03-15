@@ -6,33 +6,35 @@ import { ArrowUpRight } from "lucide-react";
 import { usePublishedProjects } from "@/hooks/usePublicData";
 import { projects as hardcodedProjects, categoryHierarchy, MainCategory, SubCategory } from "@/data/projects";
 
-const domains = ["All", "Residential", "Commercial", "Hospitality", "Interior", "Landscape", "Urban Design", "Institutional", "Others"];
-
 const Projects = () => {
-  const [activeDomain, setActiveDomain] = useState("All");
+  const [activeMain, setActiveMain] = useState<"All" | MainCategory>("All");
+  const [activeSub, setActiveSub] = useState<string>("All");
   const { data: dbProjects, isLoading } = usePublishedProjects();
 
-  // Merge: DB projects first, then hardcoded as fallback
+  // Build unified project list with main + sub category info
   const allProjects = (() => {
     const dbList = (dbProjects || []).map((p) => ({
       id: p.id,
       slug: p.slug,
       title: p.title,
-      domain: p.domain,
+      mainCategory: (p.domain === "Residential" || p.domain === "Apartments" || p.domain === "Villas")
+        ? "Residential" as MainCategory
+        : "Commercial" as MainCategory,
+      subCategory: p.domain,
       image: p.cover_image || "/placeholder.svg",
       location: p.location || "",
       year: p.year || "",
       description: p.description || "",
     }));
 
-    // If DB has projects, show those. Otherwise fall back to hardcoded.
     if (dbList.length > 0) return dbList;
 
     return hardcodedProjects.map((p) => ({
       id: String(p.id),
       slug: p.slug,
       title: p.title,
-      domain: p.category.main,
+      mainCategory: p.category.main,
+      subCategory: p.category.sub as string,
       image: p.image,
       location: p.location,
       year: p.year,
@@ -40,9 +42,14 @@ const Projects = () => {
     }));
   })();
 
-  const filteredProjects = activeDomain === "All"
-    ? allProjects
-    : allProjects.filter((p) => p.domain === activeDomain);
+  const filteredProjects = allProjects.filter((p) => {
+    if (activeMain === "All") return true;
+    if (p.mainCategory !== activeMain) return false;
+    if (activeSub !== "All" && p.subCategory !== activeSub) return false;
+    return true;
+  });
+
+  const mainCategories: ("All" | MainCategory)[] = ["All", "Commercial", "Residential"];
 
   return (
     <Layout>
@@ -60,24 +67,54 @@ const Projects = () => {
         </div>
       </section>
 
-      {/* Domain Filter */}
-      <section className="py-8 border-b border-border sticky top-[72px] bg-background z-30">
+      {/* Category Filter */}
+      <section className="py-6 border-b border-border sticky top-[72px] bg-background z-30">
         <div className="container mx-auto px-6 md:px-12 lg:px-20">
+          {/* Main categories */}
           <div className="flex flex-wrap gap-2 md:gap-4">
-            {domains.map((domain) => (
+            {mainCategories.map((cat) => (
               <button
-                key={domain}
-                onClick={() => setActiveDomain(domain)}
-                className={`px-4 py-2 text-sm uppercase tracking-widest transition-colors ${
-                  activeDomain === domain
+                key={cat}
+                onClick={() => { setActiveMain(cat); setActiveSub("All"); }}
+                className={`px-5 py-2.5 text-sm uppercase tracking-widest transition-colors ${
+                  activeMain === cat
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {domain === "All" ? "All Projects" : domain}
+                {cat === "All" ? "All Projects" : cat}
               </button>
             ))}
           </div>
+
+          {/* Subcategories */}
+          {activeMain !== "All" && (
+            <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-border/50">
+              <button
+                onClick={() => setActiveSub("All")}
+                className={`px-3 py-1.5 text-xs uppercase tracking-wider transition-colors rounded ${
+                  activeSub === "All"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                }`}
+              >
+                All {activeMain}
+              </button>
+              {categoryHierarchy[activeMain].subcategories.map((sub) => (
+                <button
+                  key={sub.key}
+                  onClick={() => setActiveSub(sub.key)}
+                  className={`px-3 py-1.5 text-xs uppercase tracking-wider transition-colors rounded ${
+                    activeSub === sub.key
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  {sub.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -92,7 +129,7 @@ const Projects = () => {
             <div className="text-center py-20">
               <p className="text-muted-foreground text-lg">No projects found in this category.</p>
               <button
-                onClick={() => setActiveDomain("All")}
+                onClick={() => { setActiveMain("All"); setActiveSub("All"); }}
                 className="mt-4 text-accent hover:underline"
               >
                 View all projects
@@ -118,7 +155,7 @@ const Projects = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/90 via-charcoal-dark/30 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                       <span className="text-label text-gold-light">
-                        {project.domain}
+                        {project.subCategory}
                       </span>
                       <h3 className="font-serif text-2xl md:text-3xl text-primary-foreground mt-2">
                         {project.title}
