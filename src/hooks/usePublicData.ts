@@ -71,9 +71,9 @@ export const useProjectBySlug = (slug: string) => {
         .from("projects")
         .select("*")
         .eq("slug", slug)
-        .single();
+        .maybeSingle();
       if (error) throw error;
-      return data as DBProject;
+      return data as DBProject | null;
     },
     enabled: !!slug,
   });
@@ -120,7 +120,6 @@ export const useSiteContent = (page: string) => {
         .eq("page", page)
         .order("sort_order", { ascending: true });
       if (error) throw error;
-      // Convert to a key-value map
       const map: Record<string, string> = {};
       data?.forEach((item) => {
         map[`${item.section}.${item.content_key}`] = item.content_value || "";
