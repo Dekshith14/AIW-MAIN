@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Star, Eye, EyeOff, Search, Copy } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import ImageUpload from "@/components/admin/ImageUpload";
 
 interface Project {
   id: string;
@@ -337,10 +338,10 @@ const AdminProjects = () => {
                 <Input value={formData.style} onChange={(e) => setFormData({ ...formData, style: e.target.value })} />
               </div>
             </div>
-            <div>
-              <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Cover Image URL</label>
-              <Input value={formData.cover_image} onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })} placeholder="Upload via Media Library first" />
-            </div>
+            <ImageUpload
+              value={formData.cover_image}
+              onChange={(url) => setFormData({ ...formData, cover_image: url })}
+            />
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Highlights (one per line)</label>
               <Textarea value={formData.highlights} onChange={(e) => setFormData({ ...formData, highlights: e.target.value })} rows={3} />
