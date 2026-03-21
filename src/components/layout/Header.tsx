@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const navItems = [
   { name: "Home", path: "/" },
@@ -39,12 +40,11 @@ const Header = () => {
       >
         <div className="container mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between">
           <Link to="/" className="relative z-10 group">
-            <span className="font-serif text-2xl md:text-3xl tracking-tight text-foreground transition-colors group-hover:text-accent duration-500">
-              AIW
-            </span>
-            <span className="ml-3 text-[0.6rem] uppercase tracking-[0.25em] text-muted-foreground hidden sm:inline font-sans">
-              Construction & Design
-            </span>
+            <img
+              src={logo}
+              alt="AIW - A Complete Solution Under One Roof"
+              className="h-10 md:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+            />
           </Link>
 
           {/* Desktop Navigation */}
