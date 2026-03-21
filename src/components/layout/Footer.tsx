@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, Instagram, Linkedin, Facebook } from "lucide-react";
+import { useSiteContent } from "@/hooks/usePublicData";
 
 const Footer = () => {
+  const { data: content } = useSiteContent("footer");
+  const address = (content?.["contact.address"] || "#47/1, Kanakashree Layout,\nDr. S.R.K. Nagar Post, Byrathi,\nBangalore – 560 077, Karnataka, India").split("\n");
+
   return (
     <footer className="bg-atmosphere-dark text-primary-foreground relative">
       {/* Top accent line */}
@@ -17,8 +21,8 @@ const Footer = () => {
               </span>
             </Link>
             <p className="mt-5 text-sm text-stone leading-[1.8] font-light">
-              Specialized interiors, civil & MEP services. Complete solution
-              under one roof. Offices in Karnataka, Tamil Nadu & Telangana.
+              {content?.["brand.description"] ||
+                "Specialized interiors, civil & MEP services. Complete solution under one roof. Offices in Karnataka, Tamil Nadu & Telangana."}
             </p>
             <div className="flex gap-3 mt-8">
               {[
@@ -40,7 +44,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-label text-gold-light mb-8">Navigation</h4>
+            <h4 className="text-label text-gold-light mb-8">{content?.["navigation.title"] || "Navigation"}</h4>
             <ul className="space-y-4">
               {["Home", "About", "Services", "Projects", "Contact"].map((item) => (
                 <li key={item}>
@@ -57,7 +61,7 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <h4 className="text-label text-gold-light mb-8">Services</h4>
+            <h4 className="text-label text-gold-light mb-8">{content?.["services.title"] || "Services"}</h4>
             <ul className="space-y-4">
               {[
                 "Specialized Interiors",
@@ -80,28 +84,29 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h4 className="text-label text-gold-light mb-8">Contact</h4>
+            <h4 className="text-label text-gold-light mb-8">{content?.["contact.title"] || "Contact"}</h4>
             <ul className="space-y-5">
               <li className="flex items-start gap-3">
                 <MapPin size={16} className="text-accent mt-1 flex-shrink-0" />
                 <span className="text-stone text-sm leading-relaxed">
-                  #47/1, Kanakashree Layout,
-                  <br />
-                  Dr. S.R.K. Nagar Post, Byrathi,
-                  <br />
-                  Bangalore – 560 077, Karnataka, India
+                  {address.map((line, index) => (
+                    <span key={`${line}-${index}`}>
+                      {line}
+                      {index < address.length - 1 && <br />}
+                    </span>
+                  ))}
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={16} className="text-accent flex-shrink-0" />
                 <a href="tel:+919876543210" className="text-stone hover:text-primary-foreground transition-colors duration-500 text-sm">
-                  +91 98765 43210
+                  {content?.["contact.phone"] || "+91 98765 43210"}
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={16} className="text-accent flex-shrink-0" />
                 <a href="mailto:info@aiwindia.com" className="text-stone hover:text-primary-foreground transition-colors duration-500 text-sm">
-                  info@aiwindia.com
+                  {content?.["contact.email"] || "info@aiwindia.com"}
                 </a>
               </li>
             </ul>
@@ -112,11 +117,11 @@ const Footer = () => {
         <div className="mt-20 pt-8 border-t border-charcoal-light/30">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-stone/60 text-xs tracking-wider">
-              © {new Date().getFullYear()} AIW — Specialized Interiors, Civil & MEP Services. All rights reserved.
+              © {new Date().getFullYear()} {content?.["legal.copyright"] || "AIW — Specialized Interiors, Civil & MEP Services. All rights reserved."}
             </p>
             <div className="flex gap-8 text-xs text-stone/60 tracking-wider">
               <a href="https://www.aiwindia.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground transition-colors duration-500">
-                www.aiwindia.com
+                {content?.["legal.website"] || "www.aiwindia.com"}
               </a>
               <a href="#" className="hover:text-primary-foreground transition-colors duration-500">
                 Privacy Policy

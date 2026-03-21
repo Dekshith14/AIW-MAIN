@@ -4,43 +4,26 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { usePublishedProjects } from "@/hooks/usePublicData";
-import { projects as hardcodedProjects, categoryHierarchy, MainCategory, SubCategory } from "@/data/projects";
+import { categoryHierarchy, MainCategory } from "@/data/projects";
 
 const Projects = () => {
   const [activeMain, setActiveMain] = useState<"All" | MainCategory>("All");
   const [activeSub, setActiveSub] = useState<string>("All");
   const { data: dbProjects, isLoading } = usePublishedProjects();
 
-  // Build unified project list with main + sub category info
-  const allProjects = (() => {
-    const dbList = (dbProjects || []).map((p) => ({
-      id: p.id,
-      slug: p.slug,
-      title: p.title,
-      mainCategory: (p.domain === "Residential" || p.domain === "Apartments" || p.domain === "Villas")
-        ? "Residential" as MainCategory
-        : "Commercial" as MainCategory,
-      subCategory: p.domain,
-      image: p.cover_image || "/placeholder.svg",
-      location: p.location || "",
-      year: p.year || "",
-      description: p.description || "",
-    }));
-
-    if (dbList.length > 0) return dbList;
-
-    return hardcodedProjects.map((p) => ({
-      id: String(p.id),
-      slug: p.slug,
-      title: p.title,
-      mainCategory: p.category.main,
-      subCategory: p.category.sub as string,
-      image: p.image,
-      location: p.location,
-      year: p.year,
-      description: p.description,
-    }));
-  })();
+  const allProjects = (dbProjects || []).map((p) => ({
+    id: p.id,
+    slug: p.slug,
+    title: p.title,
+    mainCategory: (p.domain === "Residential" || p.domain === "Apartments" || p.domain === "Villas")
+      ? "Residential" as MainCategory
+      : "Commercial" as MainCategory,
+    subCategory: p.domain,
+    image: p.cover_image || "/placeholder.svg",
+    location: p.location || "",
+    year: p.year || "",
+    description: p.description || "",
+  }));
 
   const filteredProjects = allProjects.filter((p) => {
     if (activeMain === "All") return true;

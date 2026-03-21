@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Building2, Palette, Wrench, Armchair, Key, Compass } from "lucide-react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import { useSiteContent } from "@/hooks/usePublicData";
 
 const services = [
   {
@@ -42,13 +43,15 @@ const services = [
 ];
 
 const ServicesPreview = () => {
+  const { data: content } = useSiteContent("homepage");
+
   return (
     <section className="section-padding bg-atmosphere">
       <div className="container mx-auto">
         <AnimatedSection className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20">
           <div>
-            <span className="text-label text-accent">What We Do</span>
-            <h2 className="text-headline mt-4">Complete Interior & Construction Solutions</h2>
+            <span className="text-label text-accent">{content?.["services.eyebrow"] || "What We Do"}</span>
+            <h2 className="text-headline mt-4">{content?.["services.title"] || "Complete Interior & Construction Solutions"}</h2>
           </div>
           <Link
             to="/services"

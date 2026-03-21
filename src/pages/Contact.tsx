@@ -3,6 +3,7 @@
  import AnimatedSection from "@/components/ui/AnimatedSection";
  import { Mail, Phone, MapPin, Send, Clock } from "lucide-react";
  import { toast } from "sonner";
+ import { useSiteContent } from "@/hooks/usePublicData";
  
  const Contact = () => {
    const [formData, setFormData] = useState({
@@ -13,6 +14,9 @@
      message: "",
    });
    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { data: content } = useSiteContent("contact");
+    const address = (content?.["info.address"] || "#47/1, Kanakashree Layout,\nDr. S.R.K. Nagar Post, Byrathi,\nBangalore – 560 077, Karnataka, India").split("\n");
+    const hours = (content?.["info.hours"] || "Mon - Fri: 9:00 AM - 6:00 PM\nSat: By Appointment").split("\n");
  
    const handleSubmit = async (e: React.FormEvent) => {
      e.preventDefault();
@@ -38,11 +42,10 @@
        <section className="pt-32 pb-20 md:pt-40 md:pb-28 bg-secondary">
          <div className="container mx-auto px-6 md:px-12 lg:px-20">
            <AnimatedSection className="max-w-3xl">
-             <span className="text-label text-accent">Get In Touch</span>
-             <h1 className="text-display mt-4 mb-6">Contact Us</h1>
+              <span className="text-label text-accent">{content?.["hero.eyebrow"] || "Get In Touch"}</span>
+              <h1 className="text-display mt-4 mb-6">{content?.["hero.title"] || "Contact Us"}</h1>
              <p className="text-body-large">
-               Ready to start your project? We'd love to hear from you. Reach out for
-               a free consultation.
+                {content?.["hero.description"] || "Ready to start your project? We'd love to hear from you. Reach out for a free consultation."}
              </p>
            </AnimatedSection>
          </div>
@@ -55,7 +58,7 @@
              {/* Contact Info */}
              <div>
                <AnimatedSection>
-                 <h2 className="text-subheadline mb-8">Let's Connect</h2>
+                  <h2 className="text-subheadline mb-8">{content?.["info.title"] || "Let's Connect"}</h2>
                  <div className="space-y-8">
                    <div className="flex items-start gap-4">
                      <div className="w-12 h-12 rounded-sm bg-muted flex items-center justify-center flex-shrink-0">
@@ -64,11 +67,12 @@
                      <div>
                        <h3 className="font-serif text-lg mb-1">Visit Us</h3>
                         <p className="text-muted-foreground text-sm leading-relaxed">
-                          #47/1, Kanakashree Layout,
-                          <br />
-                          Dr. S.R.K. Nagar Post, Byrathi,
-                          <br />
-                          Bangalore – 560 077, Karnataka, India
+                           {address.map((line, index) => (
+                             <span key={`${line}-${index}`}>
+                               {line}
+                               {index < address.length - 1 && <><br /></>}
+                             </span>
+                           ))}
                         </p>
                      </div>
                    </div>
@@ -83,7 +87,7 @@
                           href="tel:+919876543210"
                           className="text-muted-foreground text-sm hover:text-accent transition-colors"
                         >
-                          +91 98765 43210
+                          {content?.["info.phone"] || "+91 98765 43210"}
                         </a>
                      </div>
                    </div>
@@ -98,7 +102,7 @@
                           href="mailto:info@aiwindia.com"
                           className="text-muted-foreground text-sm hover:text-accent transition-colors"
                         >
-                          info@aiwindia.com
+                          {content?.["info.email"] || "info@aiwindia.com"}
                         </a>
                      </div>
                    </div>
@@ -110,9 +114,12 @@
                      <div>
                        <h3 className="font-serif text-lg mb-1">Office Hours</h3>
                        <p className="text-muted-foreground text-sm leading-relaxed">
-                         Mon - Fri: 9:00 AM - 6:00 PM
-                         <br />
-                         Sat: By Appointment
+                          {hours.map((line, index) => (
+                            <span key={`${line}-${index}`}>
+                              {line}
+                              {index < hours.length - 1 && <><br /></>}
+                            </span>
+                          ))}
                        </p>
                      </div>
                    </div>
@@ -249,7 +256,7 @@
              <MapPin size={48} className="mx-auto text-accent mb-4" />
              <p className="text-muted-foreground">Map Integration Placeholder</p>
               <p className="text-sm text-muted-foreground mt-2">
-                #47/1, Kanakashree Layout, Byrathi, Bangalore – 560 077
+                 {(content?.["info.address"] || "#47/1, Kanakashree Layout, Byrathi, Bangalore – 560 077").replace(/\n/g, ", ")}
               </p>
            </div>
          </div>

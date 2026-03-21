@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Star, Eye, EyeOff, Search, Copy } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import ImageUpload from "@/components/admin/ImageUpload";
+import { fallbackProjects } from "@/data/adminFallbacks";
 
 interface Project {
   id: string;
@@ -31,6 +32,7 @@ interface Project {
   tags: string[] | null;
   highlights: string[] | null;
   category_id: string | null;
+  isFallback?: boolean;
 }
 
 const domains = ["Residential", "Commercial", "Hospitality", "Interior", "Landscape", "Urban Design", "Institutional", "Others"];
@@ -65,7 +67,19 @@ const AdminProjects = () => {
       .from("projects")
       .select("*")
       .order("sort_order", { ascending: true });
-    if (!error && data) setProjects(data);
+    if (!error && data) {
+      const bySlug = new Map<string, Project>();
+
+      fallbackProjects.forEach((project) => {
+        bySlug.set(project.slug, { ...project, isFallback: true });
+      });
+
+      data.forEach((project) => {
+        bySlug.set(project.slug, project);
+      });
+
+      setProjects(Array.from(bySlug.values()).sort((a, b) => a.sort_order - b.sort_order));
+    }
     setLoading(false);
   };
 
@@ -108,6 +122,10 @@ const AdminProjects = () => {
 
   const handleSave = async () => {
     const slug = formData.slug || generateSlug(formData.title);
+    const nextSortOrder = editingProject?.sort_order ?? (projects.reduce((max, project) => Math.max(max, project.sort_order), -1) + 1);
+    const nextFeaturedOrder = formData.is_featured
+      ? editingProject?.featured_order ?? (projects.reduce((max, project) => Math.max(max, project.featured_order ?? -1), -1) + 1)
+      : null;
     const payload = {
       title: formData.title,
       slug,
@@ -122,11 +140,13 @@ const AdminProjects = () => {
       cover_image: formData.cover_image || null,
       status: formData.status,
       is_featured: formData.is_featured,
+      featured_order: nextFeaturedOrder,
+      sort_order: nextSortOrder,
       highlights: formData.highlights ? formData.highlights.split("\n").filter(Boolean) : null,
       tags: formData.tags ? formData.tags.split(",").map((t) => t.trim()).filter(Boolean) : null,
     };
 
-    if (editingProject) {
+    if (editingProject && !editingProject.isFallback) {
       const { error } = await supabase.from("projects").update(payload).eq("id", editingProject.id);
       if (error) { toast.error("Failed to update project"); return; }
       toast.success("Project updated");
@@ -148,19 +168,48 @@ const AdminProjects = () => {
   };
 
   const toggleFeatured = async (id: string, current: boolean) => {
-    await supabase.from("projects").update({ is_featured: !current }).eq("id", id);
+    const project = projects.find((item) => item.id === id);
+    if (!project) return;
+
+    if (project.isFallback) {
+      const { error } = await supabase.from("projects").insert({
+        ...project,
+        id: undefined,
+        isFallback: undefined,
+        is_featured: !current,
+        featured_order: !current ? projects.reduce((max, item) => Math.max(max, item.featured_order ?? -1), -1) + 1 : null,
+      });
+      if (error) { toast.error("Failed to update featured state"); return; }
+    } else {
+      const { error } = await supabase.from("projects").update({ is_featured: !current, featured_order: !current ? projects.reduce((max, item) => Math.max(max, item.featured_order ?? -1), -1) + 1 : null }).eq("id", id);
+      if (error) { toast.error("Failed to update featured state"); return; }
+    }
     fetchProjects();
   };
 
   const toggleStatus = async (id: string, current: string) => {
     const newStatus = current === "published" ? "draft" : "published";
-    await supabase.from("projects").update({ status: newStatus }).eq("id", id);
+    const project = projects.find((item) => item.id === id);
+    if (!project) return;
+
+    if (project.isFallback) {
+      const { error } = await supabase.from("projects").insert({
+        ...project,
+        id: undefined,
+        isFallback: undefined,
+        status: newStatus,
+      });
+      if (error) { toast.error(`Failed to set project ${newStatus}`); return; }
+    } else {
+      const { error } = await supabase.from("projects").update({ status: newStatus }).eq("id", id);
+      if (error) { toast.error(`Failed to set project ${newStatus}`); return; }
+    }
     toast.success(`Project ${newStatus}`);
     fetchProjects();
   };
 
   const duplicateProject = async (project: Project) => {
-    const { id, ...rest } = project;
+    const { id, isFallback, ...rest } = project;
     const newSlug = `${project.slug}-copy-${Date.now()}`;
     const { error } = await supabase.from("projects").insert({
       ...rest,
@@ -249,7 +298,7 @@ const AdminProjects = () => {
                       <Button variant="ghost" size="icon" onClick={() => duplicateProject(project)} title="Duplicate">
                         <Copy size={14} />
                       </Button>
-                      {isAdmin && (
+                      {isAdmin && !project.isFallback && (
                         <Button variant="ghost" size="icon" onClick={() => handleDelete(project.id)} className="hover:text-destructive" title="Delete">
                           <Trash2 size={14} />
                         </Button>

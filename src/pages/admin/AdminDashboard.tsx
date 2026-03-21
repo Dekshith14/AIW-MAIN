@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { FolderKanban, Image, Eye, Users } from "lucide-react";
+import { fallbackProjects } from "@/data/adminFallbacks";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -13,17 +14,23 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchStats = async () => {
-      const [projectsRes, mediaRes, viewsRes, publishedRes] = await Promise.all([
-        supabase.from("projects").select("id", { count: "exact", head: true }),
+      const [projectsRes, mediaRes, viewsRes] = await Promise.all([
+        supabase.from("projects").select("slug,status"),
         supabase.from("media").select("id", { count: "exact", head: true }),
         supabase.from("page_views").select("id", { count: "exact", head: true }),
-        supabase.from("projects").select("id", { count: "exact", head: true }).eq("status", "published"),
       ]);
+
+      const mergedProjects = new Map(fallbackProjects.map((project) => [project.slug, project]));
+      (projectsRes.data || []).forEach((project) => {
+        mergedProjects.set(project.slug, { ...mergedProjects.get(project.slug), ...project });
+      });
+
+      const mergedList = Array.from(mergedProjects.values());
       setStats({
-        projects: projectsRes.count || 0,
+        projects: mergedList.length,
         media: mediaRes.count || 0,
         pageViews: viewsRes.count || 0,
-        published: publishedRes.count || 0,
+        published: mergedList.filter((project) => project.status === "published").length,
       });
     };
     fetchStats();

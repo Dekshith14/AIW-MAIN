@@ -2,6 +2,7 @@ import Layout from "@/components/layout/Layout";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import { Link } from "react-router-dom";
 import { ArrowRight, Palette, Building2, Compass, Armchair, Key, Ruler } from "lucide-react";
+import { useSiteContent } from "@/hooks/usePublicData";
 
 const services = [
   {
@@ -79,17 +80,18 @@ const services = [
 ];
 
 const Services = () => {
+  const { data: content } = useSiteContent("services");
+
   return (
     <Layout>
       {/* Hero */}
       <section className="pt-32 pb-20 md:pt-40 md:pb-28 bg-secondary">
         <div className="container mx-auto px-6 md:px-12 lg:px-20">
           <AnimatedSection className="max-w-3xl">
-            <span className="text-label text-accent">Our Expertise</span>
-            <h1 className="text-display mt-4 mb-6">Services</h1>
+            <span className="text-label text-accent">{content?.["hero.eyebrow"] || "Our Expertise"}</span>
+            <h1 className="text-display mt-4 mb-6">{content?.["hero.title"] || "Services"}</h1>
             <p className="text-body-large">
-              Comprehensive interiors, civil, and MEP services tailored to bring your
-              vision to life with precision and artistry.
+              {content?.["hero.description"] || "Comprehensive interiors, civil, and MEP services tailored to bring your vision to life with precision and artistry."}
             </p>
           </AnimatedSection>
         </div>
@@ -139,8 +141,8 @@ const Services = () => {
       <section className="section-padding bg-secondary">
         <div className="container mx-auto">
           <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-label text-accent">Industries We Serve</span>
-            <h2 className="text-headline mt-3">Reference Markets</h2>
+            <span className="text-label text-accent">{content?.["markets.eyebrow"] || "Industries We Serve"}</span>
+            <h2 className="text-headline mt-3">{content?.["markets.title"] || "Reference Markets"}</h2>
           </AnimatedSection>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
@@ -169,8 +171,8 @@ const Services = () => {
       <section className="section-padding">
         <div className="container mx-auto">
           <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-label text-accent">How We Work</span>
-            <h2 className="text-headline mt-3">Our Process</h2>
+            <span className="text-label text-accent">{content?.["process.eyebrow"] || "How We Work"}</span>
+            <h2 className="text-headline mt-3">{content?.["process.title"] || "Our Process"}</h2>
           </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -202,14 +204,13 @@ const Services = () => {
         <div className="container mx-auto text-center">
           <AnimatedSection>
             <h2 className="text-headline mb-6">
-              Ready to Start Your Project?
+              {content?.["cta.title"] || "Ready to Start Your Project?"}
             </h2>
             <p className="text-lg text-stone max-w-xl mx-auto mb-10">
-              Let's discuss how we can bring your vision to life. Contact us for a
-              free consultation.
+              {content?.["cta.description"] || "Let's discuss how we can bring your vision to life. Contact us for a free consultation."}
             </p>
             <Link to="/contact" className="btn-gold inline-flex items-center gap-2 group">
-              Get Free Consultation
+              {content?.["cta.button_label"] || "Get Free Consultation"}
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
           </AnimatedSection>

@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
+import { fallbackSiteContent } from "@/data/adminFallbacks";
 
 interface ContentItem {
   id?: string;
@@ -34,7 +35,17 @@ const AdminContent = () => {
 
   const fetchContent = async () => {
     const { data } = await supabase.from("site_content").select("*").order("sort_order");
-    if (data) setContent(data);
+    const merged = new Map<string, ContentItem>();
+
+    fallbackSiteContent.forEach((item) => {
+      merged.set(`${item.page}:${item.section}:${item.content_key}`, item);
+    });
+
+    data?.forEach((item) => {
+      merged.set(`${item.page}:${item.section}:${item.content_key}`, item);
+    });
+
+    setContent(Array.from(merged.values()).sort((a, b) => a.sort_order - b.sort_order));
     setLoading(false);
   };
 
@@ -71,7 +82,12 @@ const AdminContent = () => {
     for (const item of pageContent) {
       if (item.id) {
         await supabase.from("site_content").update({
+          page: item.page,
+          section: item.section,
+          content_key: item.content_key,
           content_value: item.content_value,
+          content_type: item.content_type,
+          sort_order: item.sort_order,
         }).eq("id", item.id);
       } else {
         await supabase.from("site_content").upsert({
@@ -130,12 +146,14 @@ const AdminContent = () => {
                   <div key={item.id || item.content_key} className="border-b border-border pb-4 last:border-0">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
-                        <Input
+                         <Input
                           value={item.content_key}
                           onChange={(e) => {
                             setContent((prev) =>
                               prev.map((c) =>
-                                c === item ? { ...c, content_key: e.target.value } : c
+                                 (c.id === item.id || (!c.id && c.page === item.page && c.section === item.section && c.content_key === item.content_key))
+                                   ? { ...c, content_key: e.target.value }
+                                   : c
                               )
                             );
                           }}
