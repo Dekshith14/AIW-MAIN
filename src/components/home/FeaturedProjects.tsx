@@ -2,29 +2,18 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import { useFeaturedProjects } from "@/hooks/usePublicData";
-import projectResidential from "@/assets/project-residential.jpg";
-import projectCommercial from "@/assets/project-commercial.jpg";
-import projectInterior from "@/assets/project-interior.jpg";
-
-const fallbackProjects = [
-  { id: "1", title: "Serenity Villa", domain: "Residential", image: projectResidential, location: "Beverly Hills, CA", slug: "serenity-villa" },
-  { id: "2", title: "Nexus Office Complex", domain: "Commercial", image: projectCommercial, location: "Manhattan, NY", slug: "nexus-office" },
-  { id: "3", title: "The Haven Suite", domain: "Interior Design", image: projectInterior, location: "Miami, FL", slug: "haven-suite" },
-];
 
 const FeaturedProjects = () => {
   const { data: dbFeatured } = useFeaturedProjects();
 
-  const projects = (dbFeatured && dbFeatured.length > 0)
-    ? dbFeatured.map((p) => ({
-        id: p.id,
-        title: p.title,
-        domain: p.domain,
-        image: p.cover_image || "/placeholder.svg",
-        location: p.location || "",
-        slug: p.slug,
-      }))
-    : fallbackProjects;
+  const projects = (dbFeatured || []).map((p) => ({
+    id: p.id,
+    title: p.title,
+    domain: p.domain,
+    image: p.cover_image || "/placeholder.svg",
+    location: p.location || "",
+    slug: p.slug,
+  }));
 
   return (
     <section className="section-padding bg-secondary">

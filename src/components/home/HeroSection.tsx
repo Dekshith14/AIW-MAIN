@@ -2,8 +2,11 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import heroImage from "@/assets/hero-interior.jpg";
+import { useSiteContent } from "@/hooks/usePublicData";
 
 const HeroSection = () => {
+  const { data: content } = useSiteContent("homepage");
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background Image */}
@@ -37,7 +40,7 @@ const HeroSection = () => {
               style={{ transformOrigin: "left" }}
             />
             <span className="text-label text-gold-light">
-              Interior Design & Construction Experts
+              {content?.["hero.eyebrow"] || "Interior Design & Construction Experts"}
             </span>
           </motion.div>
 
@@ -47,7 +50,7 @@ const HeroSection = () => {
             transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="text-display text-primary-foreground mb-8"
           >
-            Interior Design & Construction
+            {content?.["hero.title_line_1"] || "Interior Design & Construction"}
             <br />
             <motion.span 
               className="text-gold italic"
@@ -55,7 +58,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.9 }}
             >
-              for Modern Spaces
+              {content?.["hero.title_line_2"] || "for Modern Spaces"}
             </motion.span>
           </motion.h1>
 
@@ -65,9 +68,8 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.7 }}
             className="text-lg md:text-xl text-stone max-w-xl mb-12 leading-[1.8] font-light"
           >
-            Transform your space with our professional interior design and construction
-            services. We deliver complete turnkey solutions for homes, apartments, villas,
-            and offices — from planning and design to construction and finishing.
+            {content?.["hero.description"] ||
+              "Transform your space with our professional interior design and construction services. We deliver complete turnkey solutions for homes, apartments, villas, and offices — from planning and design to construction and finishing."}
           </motion.p>
 
           <motion.div
@@ -77,11 +79,11 @@ const HeroSection = () => {
             className="flex flex-wrap gap-5"
           >
             <Link to="/projects" className="btn-gold group inline-flex items-center gap-3">
-              <span className="relative z-10">View Projects</span>
+              <span className="relative z-10">{content?.["hero.primary_cta"] || "View Projects"}</span>
               <ArrowRight size={16} className="relative z-10 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link to="/contact" className="border border-stone/30 text-primary-foreground px-8 py-4 font-sans text-xs uppercase tracking-[0.2em] transition-all duration-500 hover:border-gold hover:text-gold backdrop-blur-sm">
-              Get Consultation
+              {content?.["hero.secondary_cta"] || "Get Consultation"}
             </Link>
           </motion.div>
         </div>

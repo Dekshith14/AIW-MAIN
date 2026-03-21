@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { fallbackCategories } from "@/data/adminFallbacks";
 
 interface Category {
   id: string;
@@ -15,6 +16,7 @@ interface Category {
   description: string | null;
   parent_id: string | null;
   sort_order: number;
+  isFallback?: boolean;
 }
 
 const AdminCategories = () => {
@@ -27,7 +29,17 @@ const AdminCategories = () => {
 
   const fetchCategories = async () => {
     const { data } = await supabase.from("categories").select("*").order("sort_order");
-    if (data) setCategories(data);
+    const bySlug = new Map<string, Category>();
+
+    fallbackCategories.forEach((category) => {
+      bySlug.set(category.slug, { ...category, isFallback: true });
+    });
+
+    data?.forEach((category) => {
+      bySlug.set(category.slug, category);
+    });
+
+    setCategories(Array.from(bySlug.values()).sort((a, b) => a.sort_order - b.sort_order));
     setLoading(false);
   };
 
@@ -51,7 +63,7 @@ const AdminCategories = () => {
     const slug = form.slug || generateSlug(form.name);
     const payload = { name: form.name, slug, description: form.description || null };
 
-    if (editing) {
+    if (editing && !editing.isFallback) {
       const { error } = await supabase.from("categories").update(payload).eq("id", editing.id);
       if (error) { toast.error("Failed to update"); return; }
       toast.success("Category updated");
@@ -98,7 +110,7 @@ const AdminCategories = () => {
                 <Button variant="ghost" size="icon" onClick={() => openEdit(cat)}>
                   <Pencil size={14} />
                 </Button>
-                {isAdmin && (
+                {isAdmin && !cat.isFallback && (
                   <Button variant="ghost" size="icon" onClick={() => handleDelete(cat.id)} className="hover:text-destructive">
                     <Trash2 size={14} />
                   </Button>
