@@ -185,7 +185,7 @@ const AdminContent = () => {
                     {item.content_type === "text" && item.content_value && item.content_value.length > 100 ? (
                       <Textarea
                         value={item.content_value || ""}
-                        onChange={(e) => updateContent(item.id, item.content_key, e.target.value)}
+                        onChange={(e) => updateContent(item, e.target.value)}
                         rows={4}
                       />
                     ) : (
