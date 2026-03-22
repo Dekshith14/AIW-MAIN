@@ -107,6 +107,7 @@ const AdminContent = () => {
     }
     toast.success("Content saved successfully");
     setSaving(false);
+    queryClient.invalidateQueries({ queryKey: ["site-content"] });
     fetchContent();
   };
 
