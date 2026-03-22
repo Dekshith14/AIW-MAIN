@@ -29,6 +29,7 @@ const pages = [
 ];
 
 const AdminContent = () => {
+  const queryClient = useQueryClient();
   const [content, setContent] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
