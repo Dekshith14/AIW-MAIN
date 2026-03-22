@@ -433,6 +433,7 @@ const AdminProjects = () => {
               images={galleryImages}
               onChange={setGalleryImages}
               maxImages={5}
+            />
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Highlights (one per line)</label>
               <Textarea value={formData.highlights} onChange={(e) => setFormData({ ...formData, highlights: e.target.value })} rows={3} />
