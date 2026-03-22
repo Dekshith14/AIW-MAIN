@@ -53,11 +53,14 @@ const AdminContent = () => {
 
   const getPageContent = (page: string) => content.filter((c) => c.page === page);
 
-  const updateContent = (id: string | undefined, key: string, value: string) => {
+  const updateContent = (item: ContentItem, value: string) => {
     setContent((prev) =>
-      prev.map((c) =>
-        (c.id === id || (!c.id && c.content_key === key)) ? { ...c, content_value: value } : c
-      )
+      prev.map((c) => {
+        if (c.id && c.id === item.id) return { ...c, content_value: value };
+        if (!c.id && c.page === item.page && c.section === item.section && c.content_key === item.content_key)
+          return { ...c, content_value: value };
+        return c;
+      })
     );
   };
 
