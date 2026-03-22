@@ -108,11 +108,17 @@ const AdminContent = () => {
     fetchContent();
   };
 
-  const deleteItem = async (id: string | undefined, key: string) => {
-    if (id) {
-      await supabase.from("site_content").delete().eq("id", id);
+  const deleteItem = async (item: ContentItem) => {
+    if (item.id) {
+      await supabase.from("site_content").delete().eq("id", item.id);
     }
-    setContent((prev) => prev.filter((c) => c.id !== id && c.content_key !== key));
+    setContent((prev) =>
+      prev.filter((c) => {
+        if (c.id && c.id === item.id) return false;
+        if (!c.id && c.page === item.page && c.section === item.section && c.content_key === item.content_key) return false;
+        return true;
+      })
+    );
     toast.success("Content item removed");
   };
 
