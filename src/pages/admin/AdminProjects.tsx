@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Star, Eye, EyeOff, Search, Copy } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import ImageUpload from "@/components/admin/ImageUpload";
+import ProjectGalleryUpload from "@/components/admin/ProjectGalleryUpload";
 import { fallbackProjects } from "@/data/adminFallbacks";
 
 interface Project {
@@ -44,6 +45,7 @@ const AdminProjects = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [galleryImages, setGalleryImages] = useState<{ id?: string; image_url: string; alt_text?: string | null; sort_order: number }[]>([]);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -90,6 +92,7 @@ const AdminProjects = () => {
 
   const openCreate = () => {
     setEditingProject(null);
+    setGalleryImages([]);
     setFormData({
       title: "", slug: "", domain: "Commercial", description: "", client: "",
       location: "", year: "", area: "", duration: "", style: "", cover_image: "",
@@ -98,7 +101,7 @@ const AdminProjects = () => {
     setIsDialogOpen(true);
   };
 
-  const openEdit = (project: Project) => {
+  const openEdit = async (project: Project) => {
     setEditingProject(project);
     setFormData({
       title: project.title,
@@ -117,6 +120,19 @@ const AdminProjects = () => {
       highlights: (project.highlights || []).join("\n"),
       tags: (project.tags || []).join(", "),
     });
+
+    // Load existing gallery images
+    if (!project.isFallback) {
+      const { data } = await supabase
+        .from("project_images")
+        .select("*")
+        .eq("project_id", project.id)
+        .order("sort_order", { ascending: true });
+      setGalleryImages(data || []);
+    } else {
+      setGalleryImages([]);
+    }
+
     setIsDialogOpen(true);
   };
 
@@ -146,15 +162,36 @@ const AdminProjects = () => {
       tags: formData.tags ? formData.tags.split(",").map((t) => t.trim()).filter(Boolean) : null,
     };
 
+    let savedProjectId: string | null = null;
+
     if (editingProject && !editingProject.isFallback) {
       const { error } = await supabase.from("projects").update(payload).eq("id", editingProject.id);
       if (error) { toast.error("Failed to update project"); return; }
+      savedProjectId = editingProject.id;
       toast.success("Project updated");
     } else {
-      const { error } = await supabase.from("projects").insert(payload);
+      const { data, error } = await supabase.from("projects").insert(payload).select("id").single();
       if (error) { toast.error("Failed to create project: " + error.message); return; }
+      savedProjectId = data.id;
       toast.success("Project created");
     }
+
+    // Save gallery images
+    if (savedProjectId && galleryImages.length > 0) {
+      // Remove old gallery images for this project
+      await supabase.from("project_images").delete().eq("project_id", savedProjectId);
+      // Insert current gallery images
+      const imagesToInsert = galleryImages.map((img, i) => ({
+        project_id: savedProjectId!,
+        image_url: img.image_url,
+        alt_text: img.alt_text || null,
+        sort_order: i,
+      }));
+      await supabase.from("project_images").insert(imagesToInsert);
+    } else if (savedProjectId && galleryImages.length === 0) {
+      await supabase.from("project_images").delete().eq("project_id", savedProjectId);
+    }
+
     setIsDialogOpen(false);
     fetchProjects();
   };
@@ -390,6 +427,12 @@ const AdminProjects = () => {
             <ImageUpload
               value={formData.cover_image}
               onChange={(url) => setFormData({ ...formData, cover_image: url })}
+            />
+            <ProjectGalleryUpload
+              projectId={editingProject && !editingProject.isFallback ? editingProject.id : null}
+              images={galleryImages}
+              onChange={setGalleryImages}
+              maxImages={5}
             />
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Highlights (one per line)</label>
