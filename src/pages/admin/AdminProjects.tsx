@@ -428,6 +428,11 @@ const AdminProjects = () => {
               value={formData.cover_image}
               onChange={(url) => setFormData({ ...formData, cover_image: url })}
             />
+            <ProjectGalleryUpload
+              projectId={editingProject && !editingProject.isFallback ? editingProject.id : null}
+              images={galleryImages}
+              onChange={setGalleryImages}
+              maxImages={5}
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Highlights (one per line)</label>
               <Textarea value={formData.highlights} onChange={(e) => setFormData({ ...formData, highlights: e.target.value })} rows={3} />
