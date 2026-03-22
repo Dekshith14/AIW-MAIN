@@ -53,16 +53,25 @@ const Header = () => {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
           isScrolled
-            ? "bg-background/90 backdrop-blur-xl shadow-[0_1px_0_hsl(var(--border))] py-4"
-            : "bg-transparent py-6"
+            ? "bg-background/90 backdrop-blur-xl shadow-[0_1px_0_hsl(var(--border))] py-3"
+            : "bg-transparent py-5"
         }`}
       >
         <div className="container mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between">
-          <Link to="/" className="relative z-10 group">
+          <Link to="/" className="relative z-10 group flex items-center gap-3">
             <img
               src={activeLogo}
               alt="AIW - A Complete Solution Under One Roof"
-              className="h-10 md:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+              className={`h-9 md:h-11 w-auto object-contain transition-all duration-500 group-hover:scale-105 ${
+                isScrolled
+                  ? "brightness-[0.2] sepia saturate-[3] hue-rotate-[5deg]"
+                  : "brightness-0 invert sepia-[0.25] saturate-[2] hue-rotate-[15deg]"
+              }`}
+              style={{
+                filter: isScrolled
+                  ? "brightness(0.2) sepia(1) saturate(2.5) hue-rotate(5deg) contrast(1.1)"
+                  : "brightness(0) invert(1) sepia(0.3) saturate(1.8) hue-rotate(15deg) brightness(0.85)",
+              }}
             />
           </Link>
 
@@ -75,7 +84,9 @@ const Header = () => {
                 className={`text-xs uppercase tracking-[0.2em] transition-all duration-500 link-underline font-sans ${
                   location.pathname === item.path
                     ? "text-accent"
-                    : "text-muted-foreground hover:text-foreground"
+                    : isScrolled
+                      ? "text-muted-foreground hover:text-foreground"
+                      : "text-white/70 hover:text-white"
                 }`}
               >
                 {item.name}
@@ -89,7 +100,9 @@ const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden relative z-10 p-2 text-foreground"
+            className={`lg:hidden relative z-10 p-2 transition-colors duration-500 ${
+              isScrolled ? "text-foreground" : "text-white"
+            }`}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
