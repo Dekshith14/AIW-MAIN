@@ -176,7 +176,7 @@ const AdminContent = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => deleteItem(item.id, item.content_key)}
+                        onClick={() => deleteItem(item)}
                         className="text-destructive hover:text-destructive"
                       >
                         Remove
