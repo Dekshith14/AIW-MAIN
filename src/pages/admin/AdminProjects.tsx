@@ -45,6 +45,7 @@ const AdminProjects = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [galleryImages, setGalleryImages] = useState<{ id?: string; image_url: string; alt_text?: string | null; sort_order: number }[]>([]);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
