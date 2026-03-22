@@ -191,7 +191,7 @@ const AdminContent = () => {
                     ) : (
                       <Input
                         value={item.content_value || ""}
-                        onChange={(e) => updateContent(item.id, item.content_key, e.target.value)}
+                        onChange={(e) => updateContent(item, e.target.value)}
                       />
                     )}
                   </div>
