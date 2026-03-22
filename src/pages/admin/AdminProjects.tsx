@@ -92,6 +92,7 @@ const AdminProjects = () => {
 
   const openCreate = () => {
     setEditingProject(null);
+    setGalleryImages([]);
     setFormData({
       title: "", slug: "", domain: "Commercial", description: "", client: "",
       location: "", year: "", area: "", duration: "", style: "", cover_image: "",
