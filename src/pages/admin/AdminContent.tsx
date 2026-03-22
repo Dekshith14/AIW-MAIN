@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ const pages = [
 ];
 
 const AdminContent = () => {
+  const queryClient = useQueryClient();
   const [content, setContent] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -53,11 +55,14 @@ const AdminContent = () => {
 
   const getPageContent = (page: string) => content.filter((c) => c.page === page);
 
-  const updateContent = (id: string | undefined, key: string, value: string) => {
+  const updateContent = (item: ContentItem, value: string) => {
     setContent((prev) =>
-      prev.map((c) =>
-        (c.id === id || (!c.id && c.content_key === key)) ? { ...c, content_value: value } : c
-      )
+      prev.map((c) => {
+        if (c.id && c.id === item.id) return { ...c, content_value: value };
+        if (!c.id && c.page === item.page && c.section === item.section && c.content_key === item.content_key)
+          return { ...c, content_value: value };
+        return c;
+      })
     );
   };
 
@@ -102,14 +107,21 @@ const AdminContent = () => {
     }
     toast.success("Content saved successfully");
     setSaving(false);
+    queryClient.invalidateQueries({ queryKey: ["site-content"] });
     fetchContent();
   };
 
-  const deleteItem = async (id: string | undefined, key: string) => {
-    if (id) {
-      await supabase.from("site_content").delete().eq("id", id);
+  const deleteItem = async (item: ContentItem) => {
+    if (item.id) {
+      await supabase.from("site_content").delete().eq("id", item.id);
     }
-    setContent((prev) => prev.filter((c) => c.id !== id && c.content_key !== key));
+    setContent((prev) =>
+      prev.filter((c) => {
+        if (c.id && c.id === item.id) return false;
+        if (!c.id && c.page === item.page && c.section === item.section && c.content_key === item.content_key) return false;
+        return true;
+      })
+    );
     toast.success("Content item removed");
   };
 
@@ -167,7 +179,7 @@ const AdminContent = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => deleteItem(item.id, item.content_key)}
+                        onClick={() => deleteItem(item)}
                         className="text-destructive hover:text-destructive"
                       >
                         Remove
@@ -176,13 +188,13 @@ const AdminContent = () => {
                     {item.content_type === "text" && item.content_value && item.content_value.length > 100 ? (
                       <Textarea
                         value={item.content_value || ""}
-                        onChange={(e) => updateContent(item.id, item.content_key, e.target.value)}
+                        onChange={(e) => updateContent(item, e.target.value)}
                         rows={4}
                       />
                     ) : (
                       <Input
                         value={item.content_value || ""}
-                        onChange={(e) => updateContent(item.id, item.content_key, e.target.value)}
+                        onChange={(e) => updateContent(item, e.target.value)}
                       />
                     )}
                   </div>
