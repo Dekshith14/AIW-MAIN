@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/logo.png";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import defaultLogo from "@/assets/logo.png";
 
 const navItems = [
   { name: "Home", path: "/" },
@@ -17,6 +19,21 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
+  const { data: logoUrl } = useQuery({
+    queryKey: ["site-logo"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("site_content")
+        .select("content_value")
+        .eq("page", "global")
+        .eq("section", "branding")
+        .eq("content_key", "logo_url")
+        .maybeSingle();
+      return data?.content_value || null;
+    },
+    staleTime: 1000 * 60 * 5,
+  });
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -28,6 +45,8 @@ const Header = () => {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
+
+  const activeLogo = logoUrl || defaultLogo;
 
   return (
     <>
@@ -41,7 +60,7 @@ const Header = () => {
         <div className="container mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between">
           <Link to="/" className="relative z-10 group">
             <img
-              src={logo}
+              src={activeLogo}
               alt="AIW - A Complete Solution Under One Roof"
               className="h-10 md:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
             />
