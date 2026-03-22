@@ -162,15 +162,36 @@ const AdminProjects = () => {
       tags: formData.tags ? formData.tags.split(",").map((t) => t.trim()).filter(Boolean) : null,
     };
 
+    let savedProjectId: string | null = null;
+
     if (editingProject && !editingProject.isFallback) {
       const { error } = await supabase.from("projects").update(payload).eq("id", editingProject.id);
       if (error) { toast.error("Failed to update project"); return; }
+      savedProjectId = editingProject.id;
       toast.success("Project updated");
     } else {
-      const { error } = await supabase.from("projects").insert(payload);
+      const { data, error } = await supabase.from("projects").insert(payload).select("id").single();
       if (error) { toast.error("Failed to create project: " + error.message); return; }
+      savedProjectId = data.id;
       toast.success("Project created");
     }
+
+    // Save gallery images
+    if (savedProjectId && galleryImages.length > 0) {
+      // Remove old gallery images for this project
+      await supabase.from("project_images").delete().eq("project_id", savedProjectId);
+      // Insert current gallery images
+      const imagesToInsert = galleryImages.map((img, i) => ({
+        project_id: savedProjectId!,
+        image_url: img.image_url,
+        alt_text: img.alt_text || null,
+        sort_order: i,
+      }));
+      await supabase.from("project_images").insert(imagesToInsert);
+    } else if (savedProjectId && galleryImages.length === 0) {
+      await supabase.from("project_images").delete().eq("project_id", savedProjectId);
+    }
+
     setIsDialogOpen(false);
     fetchProjects();
   };
