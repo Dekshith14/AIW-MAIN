@@ -101,7 +101,7 @@ const AdminProjects = () => {
     setIsDialogOpen(true);
   };
 
-  const openEdit = (project: Project) => {
+  const openEdit = async (project: Project) => {
     setEditingProject(project);
     setFormData({
       title: project.title,
@@ -120,6 +120,19 @@ const AdminProjects = () => {
       highlights: (project.highlights || []).join("\n"),
       tags: (project.tags || []).join(", "),
     });
+
+    // Load existing gallery images
+    if (!project.isFallback) {
+      const { data } = await supabase
+        .from("project_images")
+        .select("*")
+        .eq("project_id", project.id)
+        .order("sort_order", { ascending: true });
+      setGalleryImages(data || []);
+    } else {
+      setGalleryImages([]);
+    }
+
     setIsDialogOpen(true);
   };
 
